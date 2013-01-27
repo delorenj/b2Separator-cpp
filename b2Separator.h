@@ -73,12 +73,12 @@ public:
 private:
     
     void calcShapes(vector<b2Vec2> &pVerticesVec, vector<vector<b2Vec2> > &result);
-	b2Vec2* hitRay(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
-	b2Vec2* hitSegment(int x1, int y1, int x2, int y2, int x3, int y3, int x4, int y4);
-	bool isOnSegment(int px, int py, int x1, int y1, int x2, int y2);
-    bool pointsMatch(int x1, int y1, int x2,int y2);
-    bool isOnLine(int px, int py, int x1, int y1, int x2, int y2);
-    int det( int x1, int y1, int x2, int y2, int x3, int y3);
+	b2Vec2* hitRay(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+	b2Vec2* hitSegment(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4);
+	bool isOnSegment(float px, float py, float x1, float y1, float x2, float y2);
+    bool pointsMatch(float x1, float y1, float x2,float y2);
+    bool isOnLine(float px, float py, float x1, float y1, float x2, float y2);
+    float det( float x1, float y1, float x2, float y2, float x3, float y3);
 };
 
 #endif /* defined(__Thermite__b2Separator__) */
