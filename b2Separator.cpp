@@ -35,6 +35,7 @@ void b2Separator::Separate(b2Body* pBody, b2FixtureDef* pFixtureDef, vector<b2Ve
         pFixtureDef->shape=polyShape;
         pBody->CreateFixture(pFixtureDef); 
     }
+    delete polyShape;
 }
 		/**
 		 * Checks whether the vertices in can be properly distributed into the new fixtures (more specifically, it makes sure there are no overlapping segments and the vertices are in clockwise order). 
@@ -52,14 +53,14 @@ int b2Separator::Validate(const vector<b2Vec2> &verticesVec) {
     bool fl, fl2=false;
     
     for (i=0; i<n; i++) {
-        i2=(i<n-1)?i+1:0;
-        i3=(i>0)?i-1:n-1;
+        i2 = ( i < n-1 ) ? static_cast< float>( i+1 ) : 0.0f ;
+        i3 = ( i > 0 ) ? static_cast< float>( i-1 ) : static_cast< float >( n-1 );
         
         fl=false;
         for (j=0; j<n; j++) {
             if ((j!=i)&&(j!=i2)) {
                 if (! fl) {
-                    d = det(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y);
+                    d = det( verticesVec[ i ].x, verticesVec[ i ].y, verticesVec[ static_cast< int >( i2 ) ].x, verticesVec[ static_cast< int >( i2 ) ].y, verticesVec[ static_cast< int >( j ) ].x, verticesVec[ static_cast< int >( j ) ].y );
                     if ((d>0)) {
                         fl=true;
                     }
@@ -67,7 +68,9 @@ int b2Separator::Validate(const vector<b2Vec2> &verticesVec) {
                 
                 if ((j!=i3)) {
                     j2=(j<n-1)?j+1:0;
-                    if (hitSegment(verticesVec[i].x,verticesVec[i].y,verticesVec[i2].x,verticesVec[i2].y,verticesVec[j].x,verticesVec[j].y,verticesVec[j2].x,verticesVec[j2].y)) {
+                    if( hitSegment( verticesVec[ i ].x, verticesVec[ i ].y, verticesVec[ static_cast< int >( i2 ) ].x, verticesVec[ static_cast< int >( i2 ) ].y, verticesVec[ static_cast< int >( j ) ].x,
+                                    verticesVec[ static_cast< int >( j ) ].y, verticesVec[ static_cast< int >( j2 ) ].x, verticesVec[ static_cast< int >( j2 ) ].y ) )
+                    {
                         ret=1; // TODO: This may be wrong!!!
                     }
                 }
@@ -139,6 +142,7 @@ void b2Separator::calcShapes(vector<b2Vec2> &pVerticesVec, vector<vector<b2Vec2>
                         
                         if (pV) {
                             b2Vec2 v = *pV;
+                            delete pV;
                             dx=p2.x-v.x;
                             dy=p2.y-v.y;
                             t=dx*dx+dy*dy;
@@ -147,7 +151,7 @@ void b2Separator::calcShapes(vector<b2Vec2> &pVerticesVec, vector<vector<b2Vec2>
                                 h=j1;
                                 k=j2;
                                 hitV=v;
-                                minLen=t;
+                                minLen = static_cast< int >( t );
                             }
                         }
                     }
@@ -227,6 +231,8 @@ void b2Separator::calcShapes(vector<b2Vec2> &pVerticesVec, vector<vector<b2Vec2>
                 queue.push(*vec1);
                 queue.push(*vec2);
                 queue.pop();
+                delete vec1;
+                delete vec2;
                 
                 break;
             }
